@@ -1,8 +1,3 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-
 trigger:
 - main
 
@@ -10,10 +5,17 @@ pool:
   vmImage: ubuntu-latest
 
 steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+# Step 1: Packages your HTML file so the extension can view it
+- task: CopyFiles@2
+  displayName: 'Stage HTML file'
+  inputs:
+    SourceFolder: '$(Build.SourcesDirectory)'
+    Contents: 'index.html'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+# Step 2: Renders your live dashboard preview utilizing the correct extension identifier name
+- task: PublishHtmlReport@1
+  displayName: 'Display Live Website Preview'
+  inputs:
+    reportDir: '$(Build.ArtifactStagingDirectory)/index.html'
+    tabName: 'Live Web View'
