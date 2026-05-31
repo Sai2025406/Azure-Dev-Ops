@@ -1,39 +1,29 @@
 trigger:
-  - main  # Runs automatically whenever code changes are merged into the main branch
+  - main
 
 pool:
   vmImage: 'ubuntu-latest'
 
 variables:
-  # ⚠️ Replace these placeholders with the actual strings from your Vercel Dashboard
   VERCEL_ORG_ID: 'team_E74IuZoo0cdZy2PMNx7kftpv'
   VERCEL_PROJECT_ID: 'prj_f91KScFAzS2PqGvwBe2itMWQG9eZ'
-
 
 steps:
 - task: NodeTool@0
   inputs:
     versionSpec: '20.x'
-    displayName: 'Install Node Environment'
+  displayName: 'Install Node Environment'
 
 - task: Bash@3
   displayName: 'Extract Token & Deploy to Vercel'
   inputs:
     targetType: 'inline'
     script: |
+      # 1. Install Vercel CLI tool
       npm install -g vercel
 
-      # 2. Assign the password field from the service connection to a system variable
-      export VERCEL_TOKEN="$SYSTEM_ACCESSTOKEN"
-
-      # 3. Standard Vercel Production Build and Deploy routine
-      echo "Starting production build matching config..."
+      # 2. Trigger pure production compilation routines using the mapped secret variable
+      echo "Initializing Vercel production build process..."
       vercel pull --yes --environment=production --token=$VERCEL_TOKEN
       vercel build --prod --token=$VERCEL_TOKEN
       vercel deploy --prebuilt --prod --token=$VERCEL_TOKEN
-  env:
-    # Binds the password property from your 'Vercel-Production' endpoint directly to the step
-    SYSTEM_ACCESSTOKEN: $(Vercel-Production.Password)
-    VERCEL_ORG_ID: $(VERCEL_ORG_ID)
-    VERCEL_PROJECT_ID: $(VERCEL_PROJECT_ID)
-
