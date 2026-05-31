@@ -15,30 +15,16 @@ steps:
   displayName: 'Install Node Environment'
 
 - task: Bash@3
-  displayName: 'Compile and Deploy Live to Vercel Production'
+  displayName: 'Direct Production Build and Deploy to Vercel'
   inputs:
     targetType: 'inline'
     script: |
       # 1. Install Vercel CLI tool globally
       npm install -g vercel
 
-      # 2. Hard-clean workspace directory
+      # 2. Force remove all tracking directories to avoid validation loops
       rm -rf .vercel
 
-      # 3. Create a mock local link directory layout structure
-      mkdir .vercel
-
-      # 4. Inject the exact project credentials layout straight onto the disk
-      echo '{"orgId":"sai-sidhant-mishra-s-projects","projectId":"prj_f91KScFAzS2PqGvwBe2itMWQG9eZ"}' > .vercel/project.json
-      
-      # 5. Pull down framework structural profiles
-      echo "Pulling environment and project tracking parameters..."
-      vercel pull --yes --environment=production --token=$(VERCEL_TOKEN)
-      
-      # 6. Run framework compilation routines
-      echo "Building production code bundles..."
-      vercel build --prod --token=$(VERCEL_TOKEN)
-      
-      # 7. Push compiled folder directories live to production servers
-      echo "Shipping application live to production infrastructure..."
-      vercel deploy --prebuilt --prod --token=$(VERCEL_TOKEN)
+      # 3. Direct source push execution bypassing local builds
+      echo "Uploading workspace source directly to remote Vercel compilers..."
+      vercel deploy --prod --yes --token=$(VERCEL_TOKEN)
