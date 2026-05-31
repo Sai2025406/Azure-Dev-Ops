@@ -15,24 +15,25 @@ steps:
   displayName: 'Install Node Environment'
 
 - task: Bash@3
-  displayName: 'Extract Token & Deploy to Vercel'
+  displayName: 'Compile and Deploy Live to Vercel Production'
   inputs:
     targetType: 'inline'
     script: |
-      # 1. Install Vercel CLI tool globally
+      # 1. Install Vercel CLI engine globally
       npm install -g vercel
 
-      # 2. Hard-delete any lingering cache tracking files
+      # 2. Hard-clean workspace context tracking configuration directories
       rm -rf .vercel
 
-      # 3. Direct deployment by feeding personal scope username straight to the flags
-      echo "Pulling latest environment settings from Vercel..."
-      vercel pull --yes --environment=production --token=$VERCEL_TOKEN --scope=sai-sidhant-mishra-s-projects --project=prj_f91KScFAzS2PqGvwBe2itMWQG9eZ
+      # 3. Direct compilation using injected environment properties
+      echo "Executing local production project workspace compilation bundles..."
+      vercel build --prod --token=$VERCEL_TOKEN
       
-      echo "Building production bundles..."
-      vercel build --prod --token=$VERCEL_TOKEN --scope=sai-sidhant-mishra-s-projects --project=prj_f91KScFAzS2PqGvwBe2itMWQG9eZ
-      
-      echo "Deploying live to Vercel production..."
-      vercel deploy --prebuilt --prod --token=$VERCEL_TOKEN --scope=sai-sidhant-mishra-s-projects --project=prj_f91KScFAzS2PqGvwBe2itMWQG9eZ
+      # 4. Ship the compiled release directory straight to production servers
+      echo "Shipping application artifacts live to production infrastructure..."
+      vercel deploy --prebuilt --prod --token=$VERCEL_TOKEN
   env:
+    # 🟢 Global environment mappings that the Vercel CLI reads natively
     VERCEL_TOKEN: $(VERCEL_TOKEN)
+    VERCEL_ORG_ID: 'sai-sidhant-mishra-s-projects'
+    VERCEL_PROJECT_ID: 'prj_f91KScFAzS2PqGvwBe2itMWQG9eZ'
