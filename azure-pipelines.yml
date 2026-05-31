@@ -6,8 +6,9 @@ pool:
 
 variables:
   # ⚠️ Replace these placeholders with the actual strings from your Vercel Dashboard
-  VERCEL_ORG_ID: 'prj_YOUR_VERCEL_ORG_ID_HERE'
-  VERCEL_PROJECT_ID: 'YOUR_VERCEL_PROJECT_ID_HERE'
+  VERCEL_ORG_ID: 'team_E74IuZoo0cdZy2PMNx7kftpv'
+  VERCEL_PROJECT_ID: 'prj_f91KScFAzS2PqGvwBe2itMWQG9eZ'
+
 
 steps:
 - task: NodeTool@0
