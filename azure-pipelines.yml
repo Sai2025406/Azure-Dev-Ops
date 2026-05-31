@@ -22,17 +22,23 @@ steps:
       # 1. Install Vercel CLI tool globally
       npm install -g vercel
 
-      # 2. Hard-delete any lingering cache tracking files
+      # 2. Hard-clean workspace directory
       rm -rf .vercel
 
-      # 3. Pull down framework configuration explicitly passing token + scope params
-      echo "Pulling latest environment settings from Vercel..."
-      vercel pull --yes --environment=production --token=$(VERCEL_TOKEN) --scope=sai-sidhant-mishra-s-projects --project=prj_f91KScFAzS2PqGvwBe2itMWQG9eZ
+      # 3. Create a mock local link directory layout structure
+      mkdir .vercel
+
+      # 4. Inject the exact project credentials layout straight onto the disk
+      echo '{"orgId":"sai-sidhant-mishra-s-projects","projectId":"prj_f91KScFAzS2PqGvwBe2itMWQG9eZ"}' > .vercel/project.json
       
-      # 4. Compile your web framework code bundles
-      echo "Building production bundles..."
-      vercel build --prod --token=$(VERCEL_TOKEN) --scope=sai-sidhant-mishra-s-projects --project=prj_f91KScFAzS2PqGvwBe2itMWQG9eZ
+      # 5. Pull down framework structural profiles
+      echo "Pulling environment and project tracking parameters..."
+      vercel pull --yes --environment=production --token=$(VERCEL_TOKEN)
       
-      # 5. Push the build directory directly live to production servers
-      echo "Shipping application artifacts live to production infrastructure..."
-      vercel deploy --prebuilt --prod --token=$(VERCEL_TOKEN) --scope=sai-sidhant-mishra-s-projects --project=prj_f91KScFAzS2PqGvwBe2itMWQG9eZ
+      # 6. Run framework compilation routines
+      echo "Building production code bundles..."
+      vercel build --prod --token=$(VERCEL_TOKEN)
+      
+      # 7. Push compiled folder directories live to production servers
+      echo "Shipping application live to production infrastructure..."
+      vercel deploy --prebuilt --prod --token=$(VERCEL_TOKEN)
