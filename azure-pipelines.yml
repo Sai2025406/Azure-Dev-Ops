@@ -24,6 +24,7 @@ steps:
 
       # 2. Trigger pure production compilation routines using the mapped secret variable
       echo "Initializing Vercel production build process..."
-      vercel pull --yes --environment=production --token=$VERCEL_TOKEN
-      vercel build --prod --token=$VERCEL_TOKEN
-      vercel deploy --prebuilt --prod --token=$VERCEL_TOKEN
+      vercel pull --yes --environment=production --token=$(VERCEL_TOKEN)
+      vercel build --prod --token=$(VERCEL_TOKEN)
+      vercel deploy --prebuilt --prod --token=$(VERCEL_TOKEN)
+
