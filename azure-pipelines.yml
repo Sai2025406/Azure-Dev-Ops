@@ -24,7 +24,7 @@ steps:
       npm install -g vercel
 
       # 2. Assign the password field from the service connection to a system variable
-      export VERCEL_TOKEN="$(SYSTEM_ACCESSTOKEN)"
+      export VERCEL_TOKEN="$SYSTEM_ACCESSTOKEN"
 
       # 3. Standard Vercel Production Build and Deploy routine
       echo "Starting production build matching config..."
