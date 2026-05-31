@@ -22,22 +22,17 @@ steps:
       # 1. Install Vercel CLI tool globally
       npm install -g vercel
 
-      # 2. Delete any conflicting tracking artifacts
+      # 2. Hard-delete any lingering cache tracking files
       rm -rf .vercel
 
-      # 3. Pull down the exact workspace settings profile
+      # 3. Pull down framework configuration explicitly passing token + scope params
       echo "Pulling latest environment settings from Vercel..."
-      vercel pull --yes --environment=production --token=$VERCEL_TOKEN
-
-      # 4. Compile your framework application code locally on the build agent
+      vercel pull --yes --environment=production --token=$(VERCEL_TOKEN) --scope=sai-sidhant-mishra-s-projects --project=prj_f91KScFAzS2PqGvwBe2itMWQG9eZ
+      
+      # 4. Compile your web framework code bundles
       echo "Building production bundles..."
-      vercel build --prod --token=$VERCEL_TOKEN
-
-      # 5. Push the built build directory live to the internet
+      vercel build --prod --token=$(VERCEL_TOKEN) --scope=sai-sidhant-mishra-s-projects --project=prj_f91KScFAzS2PqGvwBe2itMWQG9eZ
+      
+      # 5. Push the build directory directly live to production servers
       echo "Shipping application artifacts live to production infrastructure..."
-      vercel deploy --prebuilt --prod --token=$VERCEL_TOKEN
-  env:
-    # 🟢 Vercel CLI looks strictly for these exact native system environment keys
-    VERCEL_TOKEN: $(VERCEL_TOKEN)
-    VERCEL_ORG_ID: 'sai-sidhant-mishra-s-projects'
-    VERCEL_PROJECT_ID: 'prj_f91KScFAzS2PqGvwBe2itMWQG9eZ'
+      vercel deploy --prebuilt --prod --token=$(VERCEL_TOKEN) --scope=sai-sidhant-mishra-s-projects --project=prj_f91KScFAzS2PqGvwBe2itMWQG9eZ
