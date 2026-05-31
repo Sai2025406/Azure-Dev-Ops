@@ -19,20 +19,22 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
-      # 1. Install Vercel CLI tool
+      # 1. Install Vercel CLI tool globally
       npm install -g vercel
 
-      # 2. Force remove any stale local cache configuration folders from the repository
+      # 2. Hard-delete any lingering cache tracking files
       rm -rf .vercel
 
-      # 3. Trigger production compilation routines using environment injection
-      echo "Initializing Vercel production build process..."
-      vercel pull --yes --environment=production
-      vercel build --prod
-      vercel deploy --prebuilt --prod
+      # 3. Explicitly execute pull and build using direct project tracking overrides
+      echo "Initializing clean build configuration link..."
+      vercel pull --yes --environment=production --token=$VERCEL_TOKEN --scope=team_E74IuZoo0cdZy2PMNx7kftpv
+      
+      echo "Building production bundles..."
+      vercel build --prod --token=$VERCEL_TOKEN
+      
+      echo "Deploying live to Vercel production..."
+      vercel deploy --prebuilt --prod --token=$VERCEL_TOKEN
   env:
-    # 🟢 This injects everything directly into Vercel's global environment space
     VERCEL_TOKEN: $(VERCEL_TOKEN)
-    VERCEL_ORG_ID: $(VERCEL_ORG_ID)
-    VERCEL_PROJECT_ID: $(VERCEL_PROJECT_ID)
+
 
