@@ -25,20 +25,14 @@ steps:
       # 2. Hard-delete any lingering cache tracking files
       rm -rf .vercel
 
-      # 3. Direct deployment by feeding IDs straight to the flags
+      # 3. Direct deployment by feeding personal scope username straight to the flags
       echo "Pulling latest environment settings from Vercel..."
-      vercel pull --yes --environment=production --token=$VERCEL_TOKEN --scope=team_E74IuZoo0cdZy2PMNx7kftpv --project=prj_f91KScFAzS2PqGvwBe2itMWQG9eZ
+      vercel pull --yes --environment=production --token=$VERCEL_TOKEN --scope=sai-sidhant-mishra-s-projects --project=prj_f91KScFAzS2PqGvwBe2itMWQG9eZ
       
       echo "Building production bundles..."
-      vercel build --prod --token=$VERCEL_TOKEN --scope=team_E74IuZoo0cdZy2PMNx7kftpv --project=prj_f91KScFAzS2PqGvwBe2itMWQG9eZ
+      vercel build --prod --token=$VERCEL_TOKEN --scope=sai-sidhant-mishra-s-projects --project=prj_f91KScFAzS2PqGvwBe2itMWQG9eZ
       
       echo "Deploying live to Vercel production..."
-      vercel deploy --prebuilt --prod --token=$VERCEL_TOKEN --scope=team_E74IuZoo0cdZy2PMNx7kftpv --project=prj_f91KScFAzS2PqGvwBe2itMWQG9eZ
+      vercel deploy --prebuilt --prod --token=$VERCEL_TOKEN --scope=sai-sidhant-mishra-s-projects --project=prj_f91KScFAzS2PqGvwBe2itMWQG9eZ
   env:
     VERCEL_TOKEN: $(VERCEL_TOKEN)
-
-
-
-
-
-
