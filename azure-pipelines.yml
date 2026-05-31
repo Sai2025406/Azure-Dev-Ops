@@ -25,9 +25,12 @@ steps:
       # 2. Hard-delete any lingering cache tracking files
       rm -rf .vercel
 
-      # 3. Explicitly execute pull and build using direct project tracking overrides
-      echo "Initializing clean build configuration link..."
-      vercel pull --yes --environment=production --token=$VERCEL_TOKEN --scope=team_E74IuZoo0cdZy2PMNx7kftpv
+      # 3. Explicitly link, build, and deploy passing your exact slug handle inline
+      echo "Linking project to Vercel..."
+      vercel link --yes --token=$VERCEL_TOKEN --project=MyFirstApp --scope=sai-sidhant-mishra-s-projectsZ
+      
+      echo "Pulling latest environment settings..."
+      vercel pull --yes --environment=production --token=$VERCEL_TOKEN
       
       echo "Building production bundles..."
       vercel build --prod --token=$VERCEL_TOKEN
@@ -36,5 +39,7 @@ steps:
       vercel deploy --prebuilt --prod --token=$VERCEL_TOKEN
   env:
     VERCEL_TOKEN: $(VERCEL_TOKEN)
+
+
 
 
