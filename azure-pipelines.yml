@@ -19,21 +19,25 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
-      # 1. Install Vercel CLI engine globally
+      # 1. Install Vercel CLI tool globally
       npm install -g vercel
 
-      # 2. Hard-clean workspace context tracking configuration directories
+      # 2. Delete any conflicting tracking artifacts
       rm -rf .vercel
 
-      # 3. Direct compilation using injected environment properties
-      echo "Executing local production project workspace compilation bundles..."
+      # 3. Pull down the exact workspace settings profile
+      echo "Pulling latest environment settings from Vercel..."
+      vercel pull --yes --environment=production --token=$VERCEL_TOKEN
+
+      # 4. Compile your framework application code locally on the build agent
+      echo "Building production bundles..."
       vercel build --prod --token=$VERCEL_TOKEN
-      
-      # 4. Ship the compiled release directory straight to production servers
+
+      # 5. Push the built build directory live to the internet
       echo "Shipping application artifacts live to production infrastructure..."
       vercel deploy --prebuilt --prod --token=$VERCEL_TOKEN
   env:
-    # 🟢 Global environment mappings that the Vercel CLI reads natively
+    # 🟢 Vercel CLI looks strictly for these exact native system environment keys
     VERCEL_TOKEN: $(VERCEL_TOKEN)
     VERCEL_ORG_ID: 'sai-sidhant-mishra-s-projects'
     VERCEL_PROJECT_ID: 'prj_f91KScFAzS2PqGvwBe2itMWQG9eZ'
