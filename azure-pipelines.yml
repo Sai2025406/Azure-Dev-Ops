@@ -1,21 +1,38 @@
 trigger:
-- main
+  - main  # Runs automatically whenever code changes are merged into the main branch
 
 pool:
-  vmImage: ubuntu-latest
+  vmImage: 'ubuntu-latest'
+
+variables:
+  # ⚠️ Replace these placeholders with the actual strings from your Vercel Dashboard
+  VERCEL_ORG_ID: 'prj_YOUR_VERCEL_ORG_ID_HERE'
+  VERCEL_PROJECT_ID: 'YOUR_VERCEL_PROJECT_ID_HERE'
 
 steps:
-# Step 1: Packages your HTML file so the extension can view it
-- task: CopyFiles@2
-  displayName: 'Stage HTML file'
+- task: NodeTool@0
   inputs:
-    SourceFolder: '$(Build.SourcesDirectory)'
-    Contents: 'index.html'
-    TargetFolder: '$(Build.ArtifactStagingDirectory)'
+    versionSpec: '20.x'
+    displayName: 'Install Node Environment'
 
-# Step 2: Renders your live dashboard preview utilizing the correct extension identifier name
-- task: PublishHtmlReport@1
-  displayName: 'Display Live Website Preview'
+- task: Bash@3
+  displayName: 'Extract Token & Deploy to Vercel'
   inputs:
-    reportDir: '$(Build.ArtifactStagingDirectory)/index.html'
-    tabName: 'Live Web View'
+    targetType: 'inline'
+    script: |
+      npm install -g vercel
+
+      # 2. Assign the password field from the service connection to a system variable
+      export VERCEL_TOKEN="$(SYSTEM_ACCESSTOKEN)"
+
+      # 3. Standard Vercel Production Build and Deploy routine
+      echo "Starting production build matching config..."
+      vercel pull --yes --environment=production --token=$VERCEL_TOKEN
+      vercel build --prod --token=$VERCEL_TOKEN
+      vercel deploy --prebuilt --prod --token=$VERCEL_TOKEN
+  env:
+    # Binds the password property from your 'Vercel-Production' endpoint directly to the step
+    SYSTEM_ACCESSTOKEN: $(Vercel-Production.Password)
+    VERCEL_ORG_ID: $(VERCEL_ORG_ID)
+    VERCEL_PROJECT_ID: $(VERCEL_PROJECT_ID)
+
